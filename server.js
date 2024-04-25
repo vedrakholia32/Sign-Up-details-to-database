@@ -16,7 +16,7 @@ db.once('open', () => {
 
 
 const userSchema = new mongoose.Schema({
-    email: String,
+    username: String,
     password: String
 });
 
@@ -31,17 +31,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, './index.html'));
 });
 
 // Route to handle login form submission
-app.post('/login', async (req, res) => {
-    const email = req.body.email;
+app.post('/loginsuccess', async (req, res) => {
+    const username = req.body.username;
     const password = req.body.password;
-    //   console.log(email);
+      // console.log(req);
 
     const newUser = new User({
-        email: email,
+        username:username,
         password: password
       });
     
@@ -49,7 +49,8 @@ app.post('/login', async (req, res) => {
       try {
         await newUser.save();
         console.log('User data saved to MongoDB:', newUser);
-        res.send('Login successful!');
+        // res.send('Login successful!');
+        res.sendFile(path.join(__dirname, 'login.html'));
       } catch (error) {
         console.error('Error saving user data:', error);
         res.status(500).send('Error saving user data');
